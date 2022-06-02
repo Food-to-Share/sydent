@@ -112,6 +112,9 @@ class ClientApiHttpServer:
         msisdn_v2.putChild(b"requestToken", self.sydent.servlets.msisdnRequestCodeV2)
         msisdn_v2.putChild(b"submitToken", self.sydent.servlets.msisdnValidateV2)
 
+        niss.putChild(b"requestToken", self.sydent.servlets.nissRequestCode)
+        niss.putChild(b"submitToken", self.sydent.servlets.nissValidate)
+
         v1.putChild(b"store-invite", self.sydent.servlets.storeInviteServlet)
 
         v1.putChild(b"sign-ed25519", self.sydent.servlets.blindlySignStuffServlet)
