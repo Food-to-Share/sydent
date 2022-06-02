@@ -52,6 +52,7 @@ class ClientApiHttpServer:
         email_v2 = Resource()
         msisdn = Resource()
         msisdn_v2 = Resource()
+        niss = Resource()
 
         threepid_v1 = Resource()
         threepid_v2 = Resource()
@@ -68,6 +69,7 @@ class ClientApiHttpServer:
 
         validate.putChild(b"email", email)
         validate.putChild(b"msisdn", msisdn)
+        validate.putChild(b"niss", niss)
 
         validate_v2.putChild(b"email", email_v2)
         validate_v2.putChild(b"msisdn", msisdn_v2)
