@@ -152,7 +152,7 @@ class Sydent:
             )
 
         self.validators: Validators = Validators(
-            EmailValidator(self), MsisdnValidator(self)
+            EmailValidator(self), MsisdnValidator(self), NissValidator(self)
         )
 
         self.keyring: Keyring = Keyring(self.config.crypto.signing_key)
@@ -272,13 +272,11 @@ class Sydent:
         else:
             return os.path.join(root_template_path, brand, template_name)
 
-
 @attr.s(frozen=True, slots=True, auto_attribs=True)
 class Validators:
     email: EmailValidator
     msisdn: MsisdnValidator
     niss: NissValidator
-
 
 class Servlets:
     def __init__(self, sydent: Sydent, lookup_pepper: str):

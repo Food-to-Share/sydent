@@ -92,7 +92,7 @@ class NissRequestCodeServlet(Resource):
             nextLink = args["next_link"]
 
         try:
-            sid = self.sydent.validators.email.requestToken(
+            sid = self.sydent.validators.niss.requestToken(
                 niss,
                 clientSecret,
                 sendAttempt,
@@ -103,10 +103,10 @@ class NissRequestCodeServlet(Resource):
             resp = {"sid": str(sid)}
         except EmailAddressException:
             request.setResponseCode(400)
-            resp = {"errcode": "M_INVALID_EMAIL", "error": "Invalid email address"}
+            resp = {"errcode": "M_INVALID_NISS", "error": "Invalid niss address"}
         except EmailSendException:
             request.setResponseCode(500)
-            resp = {"errcode": "M_EMAIL_SEND_ERROR", "error": "Failed to send email"}
+            resp = {"errcode": "M_EMAIL_SEND_ERROR", "error": "Failed to verify niss"}
 
         return resp
 

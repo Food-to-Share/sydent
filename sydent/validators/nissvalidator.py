@@ -56,7 +56,7 @@ class NissValidator:
         valSessionStore = ThreePidValSessionStore(self.sydent)
 
         valSession, token_info = valSessionStore.getOrCreateTokenSession(
-            medium="email", address=niss, clientSecret=clientSecret
+            medium="niss", address=niss, clientSecret=clientSecret
         )
 
         valSessionStore.setMtime(valSession.id, time_msec())
@@ -80,13 +80,13 @@ class NissValidator:
 
         ipstring = ipaddress if ipaddress else "an unknown location"
 
-        substitutions = {
-            "ipaddress": ipstring,
-            "link": self.makeValidateLink(
-                valSession.id, token_info.token, clientSecret, nextLink
-            ),
-            "token": token_info.token,
-        }
+        # substitutions = {
+        #     "ipaddress": ipstring,
+        #     "link": self.makeValidateLink(
+        #         valSession.id, token_info.token, clientSecret, nextLink
+        #     ),
+        #     "token": token_info.token,
+        # }
         logger.info(
             "Attempting to validate %s (nextLink: %s) to %s",
             token_info.token,
@@ -119,7 +119,7 @@ class NissValidator:
         :return: The validation link.
         """
         base = self.sydent.config.http.server_http_url_base
-        link = "%s/_matrix/identity/api/v1/validate/email/submitToken?token=%s&client_secret=%s&sid=%d" % (
+        link = "%s/_matrix/identity/api/v1/validate/niss/submitToken?token=%s&client_secret=%s&sid=%d" % (
             base,
             urllib.parse.quote(token),
             urllib.parse.quote(clientSecret),
