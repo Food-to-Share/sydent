@@ -65,6 +65,10 @@ from sydent.http.servlets.msisdnservlet import (
     MsisdnRequestCodeServlet,
     MsisdnValidateCodeServlet,
 )
+from sydent.http.servlets.nissservlet import (
+    NissRequestCodeServlet,
+    NissValidateCodeServlet
+)
 from sydent.http.servlets.pubkeyservlets import (
     Ed25519Servlet,
     EphemeralPubkeyIsValidServlet,
@@ -84,6 +88,7 @@ from sydent.util.hash import sha256_and_url_safe_base64
 from sydent.util.tokenutils import generateAlphanumericTokenOfLength
 from sydent.validators.emailvalidator import EmailValidator
 from sydent.validators.msisdnvalidator import MsisdnValidator
+from sydent.validators.nissvalidator import NissValidator
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +152,7 @@ class Sydent:
             )
 
         self.validators: Validators = Validators(
-            EmailValidator(self), MsisdnValidator(self)
+            EmailValidator(self), MsisdnValidator(self), NissValidator(self)
         )
 
         self.keyring: Keyring = Keyring(self.config.crypto.signing_key)
@@ -267,12 +272,11 @@ class Sydent:
         else:
             return os.path.join(root_template_path, brand, template_name)
 
-
 @attr.s(frozen=True, slots=True, auto_attribs=True)
 class Validators:
     email: EmailValidator
     msisdn: MsisdnValidator
-
+    niss: NissValidator
 
 class Servlets:
     def __init__(self, sydent: Sydent, lookup_pepper: str):
@@ -282,6 +286,8 @@ class Servlets:
         self.emailRequestCodeV2 = EmailRequestCodeServlet(sydent, require_auth=True)
         self.emailValidate = EmailValidateCodeServlet(sydent)
         self.emailValidateV2 = EmailValidateCodeServlet(sydent, require_auth=True)
+        self.nissRequestCode = NissRequestCodeServlet(sydent)
+        self.nissValidate = NissValidateCodeServlet(sydent)
         self.msisdnRequestCode = MsisdnRequestCodeServlet(sydent)
         self.msisdnRequestCodeV2 = MsisdnRequestCodeServlet(sydent, require_auth=True)
         self.msisdnValidate = MsisdnValidateCodeServlet(sydent)
